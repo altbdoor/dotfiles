@@ -1,0 +1,41 @@
+{
+    "auto_close_tags": false,
+    "auto_complete": false,
+    "auto_match_enabled": false,
+    "bold_folder_labels": true,
+    "caret_style": "solid",
+    "default_line_ending": "unix",
+    "detect_indentation": false,
+    "draw_white_space": "all",
+    "enable_telemetry": false,
+    "ensure_newline_at_eof_on_save": true,
+    "fade_fold_buttons": false,
+    "fallback_encoding": "UTF-8",
+    "font_options":
+    [
+        "no_italic",
+        "subpixel_antialias"
+    ],
+    "theme_font_options": [
+    ],
+    "font_size": 10,
+    "highlight_line": true,
+    "highlight_modified_tabs": true,
+    "ignored_packages":
+    [
+        "Vintage"
+    ],
+    "rulers":
+    [
+        80
+    ],
+    "show_definitions": false,
+    "show_encoding": true,
+    "show_line_endings": true,
+    "tab_completion": false,
+    "theme": "Adaptive.sublime-theme",
+    "translate_tabs_to_spaces": true,
+    "trim_automatic_white_space": false,
+    "trim_trailing_white_space_on_save": true,
+    "word_wrap": true
+}

@@ -1,0 +1,42 @@
+[
+    { "keys": ["ctrl+tab"], "command": "next_view" },
+    { "keys": ["ctrl+shift+tab"], "command": "prev_view" },
+
+    { "keys": ["ctrl+left"], "command": "move", "args": {
+        "by": "stops", "forward": false,
+        "word_begin": true, "word_end": true,
+        "line_end": true, "line_begin": false,
+        "empty_line": true,
+        "punct_begin": true, "punct_end": true
+    } },
+    { "keys": ["ctrl+right"], "command": "move", "args": {
+        "by": "stops", "forward": true,
+        "word_begin": true, "word_end": true,
+        "line_end": false, "line_begin": false,
+        "empty_line": true,
+        "punct_begin": true, "punct_end": true
+    } },
+
+    { "keys": ["ctrl+shift+left"], "command": "move", "args": {
+        "by": "stops", "forward": false, "extend": true,
+        "word_begin": true, "word_end": true,
+        "line_end": true, "line_begin": false,
+        "empty_line": true,
+        "punct_begin": true, "punct_end": true
+    } },
+    { "keys": ["ctrl+shift+right"], "command": "move", "args": {
+        "by": "stops", "forward": true, "extend": true,
+        "word_begin": true, "word_end": true,
+        "line_end": false, "line_begin": false,
+        "empty_line": true,
+        "punct_begin": true, "punct_end": true
+    } },
+
+    { "keys": ["ctrl+shift+u"], "command": "upper_case" },
+    { "keys": ["ctrl+u"], "command": "lower_case" },
+
+    {
+        "keys": ["ctrl+alt+p"],
+        "command": "prompt_select_workspace"
+    }
+]

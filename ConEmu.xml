@@ -693,9 +693,9 @@
 					<value name="GuiArgs" type="string" data=""/>
 					<value name="Active" type="long" data="1"/>
 					<value name="Count" type="long" data="3"/>
-					<value name="Cmd1" type="string" data='&gt; -cur_console:fp -cur_console:d:C:\Users\User set "PATH=%ConEmuDrive%\Program Files\Git\usr\bin;%PATH%" &amp; "%ConEmuDrive%\Program Files\Git\git-cmd.exe" --no-cd --command=%ConEmuBaseDirShort%\conemu-msys2-64.exe /usr/bin/bash.exe -l -i'/>
-					<value name="Cmd2" type="string" data='-cur_console:bps1T50H -cur_console:d:C:\Users\User set "PATH=%ConEmuDrive%\Program Files\Git\usr\bin;%PATH%" &amp; "%ConEmuDrive%\Program Files\Git\git-cmd.exe" --no-cd --command=%ConEmuBaseDirShort%\conemu-msys2-64.exe /usr/bin/bash.exe -l -i'/>
-					<value name="Cmd3" type="string" data='-cur_console:bp -cur_console:d:C:\Users\User set "PATH=%ConEmuDrive%\Program Files\Git\usr\bin;%PATH%" &amp; "%ConEmuDrive%\Program Files\Git\git-cmd.exe" --no-cd --command=%ConEmuBaseDirShort%\conemu-msys2-64.exe /usr/bin/bash.exe -l -i'/>
+					<value name="Cmd1" type="string" data='&gt; -cur_console:fp -cur_console:d:"__USERPATH__" set "PATH=%ConEmuDrive%\Program Files\Git\usr\bin;%PATH%" &amp; "%ConEmuDrive%\Program Files\Git\git-cmd.exe" --no-cd --command=%ConEmuBaseDirShort%\conemu-msys2-64.exe /usr/bin/bash.exe -l -i'/>
+					<value name="Cmd2" type="string" data='-cur_console:bps1T50H -cur_console:d:"__USERPATH__" set "PATH=%ConEmuDrive%\Program Files\Git\usr\bin;%PATH%" &amp; "%ConEmuDrive%\Program Files\Git\git-cmd.exe" --no-cd --command=%ConEmuBaseDirShort%\conemu-msys2-64.exe /usr/bin/bash.exe -l -i'/>
+					<value name="Cmd3" type="string" data='-cur_console:bp -cur_console:d:"__USERPATH__" set "PATH=%ConEmuDrive%\Program Files\Git\usr\bin;%PATH%" &amp; "%ConEmuDrive%\Program Files\Git\git-cmd.exe" --no-cd --command=%ConEmuBaseDirShort%\conemu-msys2-64.exe /usr/bin/bash.exe -l -i'/>
 				</key>
 			</key>
 			<key name="Apps" modified="2020-06-16 14:27:55" build="200615">
@@ -707,4 +707,3 @@
 		</key>
 	</key>
 </key>
-

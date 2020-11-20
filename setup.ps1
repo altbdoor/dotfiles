@@ -1,4 +1,4 @@
-# Set-ExecutionPolicy Bypass -Scope Process -Force; \.setup.ps1
+# Set-ExecutionPolicy Bypass -Scope Process -Force; .\setup.ps1
 
 # lets go
 choco feature enable -n allowGlobalConfirmation
@@ -56,8 +56,8 @@ choco install 7zip
 choco install python3
 choco install sumatrapdf.install
 choco install toggl
-choco install openvpn
 
+# choco install openvpn
 # choco install autohotkey
 
 choco feature disable -n allowGlobalConfirmation

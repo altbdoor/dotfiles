@@ -49,8 +49,13 @@ choco install paint.net
 # curl -o boltbait.zip 'https://forums.getpaint.net/applications/core/interface/file/attachment.php?id=16864'
 # Expand-Archive boltbait.zip -DestinationPath boltbait
 
-choco install k-litecodecpackfull
+# web browsers
+# ========================================
+choco install firefox
+choco install googlechrome
 choco install vscode
+
+choco install k-litecodecpackfull
 
 choco install 7zip
 choco install python3

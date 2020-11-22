@@ -1,6 +1,26 @@
-# Set-ExecutionPolicy Bypass -Scope Process -Force; .\setup.ps1
+#Requires -RunAsAdministrator
+
+$currentDir = (Split-Path $MyInvocation.MyCommand.Path)
+
+# nodejs
+# ========================================
+$pathList = ($env:Path -split ';' | Where-Object { $_ -notlike '*nodejs*' })
+
+mkdir -Force ~/Downloads/exe/nodejs
+cd ~/Downloads/exe/nodejs
+
+$nodeVersion = '12'
+$res = Invoke-WebRequest "https://nodejs.org/download/release/latest-v$nodeVersion.x/"
+$binaryName = ($res.Links | Where { $_.href -like '*-win-x64.zip' }).href
+curl -o $binaryName "https://nodejs.org/download/release/latest-v$nodeVersion.x/$binaryName"
+Expand-Archive $binaryName -DestinationPath .\
+
+$folderName = $binaryName -replace ".zip", ""
+$pathList += "%USERPROFILE%\Downloads\exe\nodejs\$folderName"
+[System.Environment]::SetEnvironmentVariable('Path', ($pathList -join ';'), [System.EnvironmentVariableTarget]::User)
 
 # lets go
+cd "$currentDir"
 choco feature enable -n allowGlobalConfirmation
 
 # git
@@ -66,3 +86,10 @@ choco install toggl
 # choco install autohotkey
 
 choco feature disable -n allowGlobalConfirmation
+
+# If running in the console, wait for input before closing.
+if ($Host.Name -eq "ConsoleHost") {
+    Write-Host "Press any key to continue..."
+    $Host.UI.RawUI.FlushInputBuffer()   # Make sure buffered input doesn't "press a key" and skip the ReadKey().
+    $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyUp") > $null
+}

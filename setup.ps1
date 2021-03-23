@@ -85,6 +85,8 @@ choco install toggl
 # choco install openvpn
 # choco install autohotkey
 
+choco install zip
+
 choco feature disable -n allowGlobalConfirmation
 
 # If running in the console, wait for input before closing.

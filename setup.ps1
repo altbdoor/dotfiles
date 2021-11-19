@@ -16,7 +16,7 @@ curl -o $binaryName "https://nodejs.org/download/release/latest-v$nodeVersion.x/
 Expand-Archive $binaryName -DestinationPath .\
 
 $folderName = $binaryName -replace ".zip", ""
-$pathList += "%USERPROFILE%\Downloads\exe\nodejs\$folderName"
+$pathList += "$env:userprofile\Downloads\exe\nodejs\$folderName"
 [System.Environment]::SetEnvironmentVariable('Path', ($pathList -join ';'), [System.EnvironmentVariableTarget]::User)
 
 # lets go

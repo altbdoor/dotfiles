@@ -3,7 +3,8 @@ set encoding=utf-8
 
 syntax on
 set laststatus=2
-colorscheme delek
+colorscheme pablo
+set background=dark
 let g:loaded_matchparen=1
 
 " tabs and spaces
@@ -16,6 +17,6 @@ set shiftround
 set autoindent
 set smartindent
 
-"no swap pls
+" no swap pls
 set nobackup
 set noswapfile

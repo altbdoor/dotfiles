@@ -7,6 +7,8 @@ colorscheme pablo
 set background=dark
 let g:loaded_matchparen=1
 
+set belloff=all
+
 " tabs and spaces
 set tabstop=4
 set shiftwidth=4

@@ -2,11 +2,13 @@ set number
 set encoding=utf-8
 
 syntax on
+set re=0
 set laststatus=2
 colorscheme pablo
 set background=dark
 let g:loaded_matchparen=1
 
+filetype indent plugin on
 set belloff=all
 
 " tabs and spaces

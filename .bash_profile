@@ -5,6 +5,12 @@ if [[ -d '/c/Windows/' ]]; then
     is_windows=1
 fi
 
+# bells
+# ========================================
+if [[ ${is_windows} == 1 && ! -f "$HOME/.inputrc" ]]; then
+    echo "set bell-style none" > "$HOME/.inputrc"
+fi
+
 # alias
 # ========================================
 alias ls="ls -Ah --color=auto"

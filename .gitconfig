@@ -1,0 +1,6 @@
+[alias]
+    st=status
+[init]
+    defaultBranch = master
+[pull]
+    rebase = true

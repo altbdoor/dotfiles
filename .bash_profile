@@ -1,3 +1,9 @@
+# macbook and arm chips
+# ========================================
+if [[ -f /opt/homebrew/bin/brew shellenv ]]; then
+    eval $(/opt/homebrew/bin/brew shellenv)
+fi
+
 # os check
 # ========================================
 is_windows=0

@@ -6,14 +6,14 @@ fi
 
 # os check
 # ========================================
-is_windows=0
+is_windows="OFF"
 if [[ -d '/c/Windows/' ]]; then
-    is_windows=1
+    is_windows="ON"
 fi
 
 # bells
 # ========================================
-if [[ ${is_windows} == 1 && ! -f "$HOME/.inputrc" ]]; then
+if [[ "$is_windows" == "ON" && ! -f "$HOME/.inputrc" ]]; then
     echo "set bell-style none" > "$HOME/.inputrc"
 fi
 
@@ -74,9 +74,15 @@ fi
 
 # nvm
 # ========================================
+if command -v fnm &> /dev/null; then
+    # https://github.com/Schniz/fnm
+    export FNM_DIR="$HOME/.fnm"
+    eval "$(fnm env --use-on-cd)"
+fi
+
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # golang
 # ========================================
@@ -116,7 +122,7 @@ function check_pyenv {
 }
 
 _PS1_PREFIX="\[\033[91m\][\u]"
-if [[ ${is_windows} == 1 ]]; then
+if [[ "$is_windows" == "ON" ]]; then
     _PS1_PREFIX="\[\033[94m\][\u]"
 fi
 

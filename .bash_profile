@@ -72,8 +72,12 @@ if [[ -d "$PYENV_ROOT" ]]; then
     fi
 fi
 
-# nvm
+# node
 # ========================================
+export NODE_OPTIONS=--dns-result-order=ipv4first
+export NPM_CONFIG_FUND="false"
+export NPM_CONFIG_AUDIT="false"
+
 if command -v fnm &> /dev/null; then
     # https://github.com/Schniz/fnm
     export FNM_DIR="$HOME/.fnm"
@@ -86,6 +90,10 @@ export GOPATH="$HOME/go"
 if [[ -d "$GOPATH" ]]; then
     export PATH="$GOPATH/bin:$PATH"
 fi
+
+# docker
+# ========================================
+export DOCKER_CLI_HINTS="false"
 
 # git stuff
 # ========================================

@@ -24,3 +24,7 @@ set smartindent
 " no swap pls
 set nobackup
 set noswapfile
+
+" search
+set ignorecase
+set smartcase

@@ -1,7 +1,7 @@
 # macbook and arm chips
 # ========================================
 if [[ -f /opt/homebrew/bin/brew ]]; then
-    eval $(/opt/homebrew/bin/brew shellenv)
+    eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
 # os check
@@ -64,12 +64,7 @@ export PYENV_ROOT="$HOME/.pyenv"
 if [[ -d "$PYENV_ROOT" ]]; then
     has_pyenv=1
     export PATH="$PYENV_ROOT/bin:$PATH"
-    export PYENV_VIRTUALENV_DISABLE_PROMPT=1
-
     eval "$(pyenv init -)"
-    if [[ $(pyenv commands | grep virtualenv) ]]; then
-        eval "$(pyenv virtualenv-init -)"
-    fi
 fi
 
 # node
@@ -100,7 +95,7 @@ export DOCKER_CLI_HINTS="false"
 # if you need the git prompt script
 # curl -OL 'https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash'
 # curl -OL 'https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh'
-# chmod +x git-*.sh
+# chmod +x git-*.sh git-*.bash
 
 if [[ -f "$HOME/git-prompt.sh" ]]; then
     source "$HOME/git-prompt.sh"
@@ -115,8 +110,8 @@ export GIT_MERGE_AUTOEDIT=no
 # playstation with rgb
 # ========================================
 function check_pyenv {
-    venv_name="$(pyenv version-name)"
-    glob_venv_name="$(pyenv global)"
+    local venv_name="$(pyenv version-name)"
+    local glob_venv_name="$(pyenv global)"
 
     if [[ "$venv_name" == "" || "$venv_name" == "$glob_venv_name" ]]; then
         echo ""
@@ -125,13 +120,41 @@ function check_pyenv {
     fi
 }
 
-_PS1_PREFIX="\[\033[91m\][\u]"
+# https://gist.github.com/vratiu/9780109
+
+# Reset
+COLOR_OFF="\[\033[0m\]"
+
+# Regular Colors
+BLACK="\[\033[0;30m\]"
+RED="\[\033[0;31m\]"
+GREEN="\[\033[0;32m\]"
+YELLOW="\[\033[0;33m\]"
+BLUE="\[\033[0;34m\]"
+PURPLE="\[\033[0;35m\]"
+CYAN="\[\033[0;36m\]"
+WHITE="\[\033[0;37m\]"
+
+# High Intensty
+IBLACK="\[\033[0;90m\]"
+IRED="\[\033[0;91m\]"
+IGREEN="\[\033[0;92m\]"
+IYELLOW="\[\033[0;93m\]"
+IBLUE="\[\033[0;94m\]"
+IPURPLE="\[\033[0;95m\]"
+ICYAN="\[\033[0;96m\]"
+IWHITE="\[\033[0;97m\]"
+
+PS1="\n$IRED[\u]"
 if [[ "$is_windows" == "ON" ]]; then
-    _PS1_PREFIX="\[\033[94m\][\u]"
+    PS1="\n$IBLUE[\u]"
 fi
 
+PS1+=" $GREEN\w$CYAN\`__git_ps1\`"
+
 if [[ ${has_pyenv} == 1 ]]; then
-    export PS1="\n${_PS1_PREFIX} \[\033[32m\]\w\[\033[36m\]\`__git_ps1\`\[\033[35m\]\`check_pyenv\` \[\033[0m\]\n\\$ "
-else
-    export PS1="\n${_PS1_PREFIX} \[\033[32m\]\w\[\033[36m\]\`__git_ps1\` \[\033[0m\]\n\\$ "
+    PS1+="$PURPLE\`check_pyenv\`"
 fi
+
+PS1+=" $COLOR_OFF\n\\$ "
+export PS1

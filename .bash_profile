@@ -158,3 +158,8 @@ fi
 
 PS1+=" $COLOR_OFF\n\\$ "
 export PS1
+
+# bash env
+if [[ -f "$HOME/.bash_env" ]]; then
+    source "$HOME/.bash_env"
+fi

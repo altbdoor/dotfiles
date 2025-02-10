@@ -89,6 +89,7 @@ fi
 # docker
 # ========================================
 export DOCKER_CLI_HINTS="false"
+export BUILDX_GIT_INFO="false"
 
 # git stuff
 # ========================================

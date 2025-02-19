@@ -67,6 +67,12 @@ if [[ -d "$PYENV_ROOT" ]]; then
     eval "$(pyenv init -)"
 fi
 
+# uv
+# ========================================
+if [[ "$is_windows" == "ON" && -f "$HOME/.local/bin/uv" ]]; then
+    export PATH="$HOME/.local/bin:$PATH"
+fi
+
 # node
 # ========================================
 export NODE_OPTIONS=--dns-result-order=ipv4first
@@ -94,9 +100,14 @@ export BUILDX_GIT_INFO="false"
 # git stuff
 # ========================================
 # if you need the git prompt script
-# curl -OL 'https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash'
-# curl -OL 'https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh'
-# chmod +x git-*.sh git-*.bash
+install_git_completion() {
+    local target_dir="$HOME"
+    curl -sL 'https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash' -o "$target_dir/git-completion.bash"
+    curl -sL 'https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh' -o "$target_dir/git-prompt.sh"
+    chmod +x "$target_dir/git-completion.bash" "$target_dir/git-prompt.sh"
+    source "$target_dir/git-prompt.sh"
+    source "$target_dir/git-completion.bash"
+}
 
 if [[ -f "$HOME/git-prompt.sh" ]]; then
     source "$HOME/git-prompt.sh"

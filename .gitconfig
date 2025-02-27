@@ -4,3 +4,21 @@
     defaultBranch = master
 [pull]
     rebase = true
+
+# https://blog.gitbutler.com/how-git-core-devs-configure-git/
+[branch]
+    sort = -committerdate
+[tag]
+    sort = version:refname
+[diff]
+    algorithm = histogram
+    colorMoved = plain
+    mnemonicPrefix = true
+    renames = true
+[commit]
+    verbose = true
+[rerere]
+    enabled = true
+    autoupdate = true
+[merge]
+    conflictstyle = diff3 

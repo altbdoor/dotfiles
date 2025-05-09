@@ -18,7 +18,6 @@
 [commit]
     verbose = true
 [rerere]
-    enabled = true
-    autoupdate = true
+    enabled = false
 [merge]
     conflictstyle = diff3 

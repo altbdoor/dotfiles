@@ -1,5 +1,6 @@
 [alias]
     st=status
+    recent=for-each-ref --count=10 --sort=-committerdate 'refs/heads/' --format '%(committerdate:relative), %(refname:short)'
 [init]
     defaultBranch = master
 [pull]

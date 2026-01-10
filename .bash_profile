@@ -1,19 +1,13 @@
 # macbook and arm chips
 # ========================================
-if [[ -f /opt/homebrew/bin/brew ]]; then
+if [[ "$OSTYPE" == "darwin"* && -f /opt/homebrew/bin/brew ]]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
-fi
-
-# linux homebrew
-# ========================================
-if [[ -f /home/linuxbrew/.linuxbrew/bin/brew ]]; then
-    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 
 # os check
 # ========================================
 is_windows="OFF"
-if [[ -d '/c/Windows/' ]]; then
+if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
     is_windows="ON"
 fi
 
@@ -36,7 +30,6 @@ export HISTSIZE=500000
 export HISTFILESIZE=100000
 export HISTCONTROL="erasedups:ignoreboth"
 export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
-export PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
 
 shopt -s histappend
 shopt -s cmdhist
@@ -62,17 +55,6 @@ bind '"\e[D": backward-char'
 #     export PATH="${PATH}:${i}"
 # done
 
-# pyenv
-# ========================================
-has_pyenv=0
-export PYENV_ROOT="$HOME/.pyenv"
-
-if [[ -d "$PYENV_ROOT" ]]; then
-    has_pyenv=1
-    export PATH="$PYENV_ROOT/bin:$PATH"
-    eval "$(pyenv init -)"
-fi
-
 # uv
 # ========================================
 if [[ "$is_windows" == "ON" && -f "$HOME/.local/bin/uv" ]]; then
@@ -84,10 +66,12 @@ fi
 export NODE_OPTIONS=--dns-result-order=ipv4first
 export NPM_CONFIG_FUND="false"
 export NPM_CONFIG_AUDIT="false"
+export NPM_CONFIG_UPDATE_NOTIFIER="false"
+export NEXT_TELEMETRY_DISABLED=1
 
-if command -v fnm &> /dev/null; then
-    # https://github.com/Schniz/fnm
-    export FNM_DIR="$HOME/.fnm"
+# https://github.com/Schniz/fnm
+export FNM_DIR="$HOME/.fnm"
+if [[ -d "$FNM_DIR" ]]; then
     eval "$(fnm env --use-on-cd)"
 fi
 
@@ -127,17 +111,6 @@ export GIT_MERGE_AUTOEDIT=no
 
 # playstation with rgb
 # ========================================
-function check_pyenv {
-    local venv_name="$(pyenv version-name)"
-    local glob_venv_name="$(pyenv global)"
-
-    if [[ "$venv_name" == "" || "$venv_name" == "$glob_venv_name" ]]; then
-        echo ""
-    else
-        echo " ($venv_name)"
-    fi
-}
-
 # https://gist.github.com/vratiu/9780109
 
 # Reset
@@ -163,19 +136,25 @@ IPURPLE="\[\033[0;95m\]"
 ICYAN="\[\033[0;96m\]"
 IWHITE="\[\033[0;97m\]"
 
-PS1="\n$IRED[\u]"
+user_color="$IRED"
 if [[ "$is_windows" == "ON" ]]; then
-    PS1="\n$IBLUE[\u]"
+    user_color="$IBLUE"
 fi
 
-PS1+=" $GREEN\w$CYAN\`__git_ps1\`"
+# appends and reload history across sessions
+hist_control="history -a; history -n; "
 
-if [[ ${has_pyenv} == 1 ]]; then
-    PS1+="$PURPLE\`check_pyenv\`"
+# git ps1
+ansi_newline=$'\n'
+pre_git="${ansi_newline}${user_color}[\u] ${GREEN}\w"
+post_git="${ansi_newline}${COLOR_OFF}\\$ "
+git_format=" ${CYAN}(%s)"
+
+if [[ $(type -t __git_ps1) == 'function' ]]; then
+    export PROMPT_COMMAND="$hist_control"'__git_ps1 "$pre_git" "$post_git" "$git_format"'
+else
+    export PROMPT_COMMAND="$hist_control"'PS1="$pre_git$post_git"'
 fi
-
-PS1+=" $COLOR_OFF\n\\$ "
-export PS1
 
 # bash env
 if [[ -f "$HOME/.bash_env" ]]; then

@@ -82,6 +82,12 @@ if [[ -d "$GOPATH" ]]; then
     export PATH="$GOPATH/bin:$PATH"
 fi
 
+# ruby 
+# ========================================
+if [[ -d "$HOME/.rbenv" ]]; then
+    eval "$(rbenv init - --no-rehash bash)"
+fi
+
 # docker
 # ========================================
 export DOCKER_CLI_HINTS="false"
@@ -157,6 +163,7 @@ else
 fi
 
 # bash env
+# ========================================
 if [[ -f "$HOME/.bash_env" ]]; then
     source "$HOME/.bash_env"
 fi

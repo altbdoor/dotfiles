@@ -35,15 +35,18 @@ shopt -s histappend
 shopt -s cmdhist
 shopt -s no_empty_cmd_completion
 shopt -s checkwinsize
-bind 'set completion-ignore-case on'
-bind "set menu-complete-display-prefix on"
-# bind "set show-all-if-ambiguous on"
 
-bind '"\e[A": history-search-backward'
-bind '"\e[B": history-search-forward'
-bind '"\e[C": forward-char'
-bind '"\e[D": backward-char'
-# bind 'TAB:menu-complete'
+if [[ $- == *i* ]]; then
+    bind 'set completion-ignore-case on'
+    bind "set menu-complete-display-prefix on"
+    # bind "set show-all-if-ambiguous on"
+    
+    bind '"\e[A": history-search-backward'
+    bind '"\e[B": history-search-forward'
+    bind '"\e[C": forward-char'
+    bind '"\e[D": backward-char'
+    # bind 'TAB:menu-complete'
+fi
 
 # path
 # ========================================

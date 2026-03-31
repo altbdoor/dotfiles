@@ -40,7 +40,7 @@ if [[ $- == *i* ]]; then
     bind 'set completion-ignore-case on'
     bind "set menu-complete-display-prefix on"
     # bind "set show-all-if-ambiguous on"
-    
+
     bind '"\e[A": history-search-backward'
     bind '"\e[B": history-search-forward'
     bind '"\e[C": forward-char'
@@ -70,6 +70,8 @@ export NODE_OPTIONS=--dns-result-order=ipv4first
 export NPM_CONFIG_FUND="false"
 export NPM_CONFIG_AUDIT="false"
 export NPM_CONFIG_UPDATE_NOTIFIER="false"
+export NPM_CONFIG_BEFORE=$(date -d "14 days ago" +"%Y-%m-%d")
+
 export NEXT_TELEMETRY_DISABLED=1
 
 # https://github.com/Schniz/fnm
@@ -85,7 +87,7 @@ if [[ -d "$GOPATH" ]]; then
     export PATH="$GOPATH/bin:$PATH"
 fi
 
-# ruby 
+# ruby
 # ========================================
 if [[ -d "$HOME/.rbenv" ]]; then
     eval "$(rbenv init - --no-rehash bash)"

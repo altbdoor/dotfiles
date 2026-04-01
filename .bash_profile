@@ -70,7 +70,13 @@ export NODE_OPTIONS=--dns-result-order=ipv4first
 export NPM_CONFIG_FUND="false"
 export NPM_CONFIG_AUDIT="false"
 export NPM_CONFIG_UPDATE_NOTIFIER="false"
-export NPM_CONFIG_BEFORE=$(date -d "14 days ago" +"%Y-%m-%d")
+
+NPM_DAYS_AGO=14
+if [[ "$OSTYPE" == "darwin"* ]]; then 
+  export NPM_CONFIG_BEFORE=$(date -v-"$NPM_DAYS_AGO"d +"%Y-%m-%d")
+else
+  export NPM_CONFIG_BEFORE=$(date -d "$NPM_DAYS_AGO days ago" +"%Y-%m-%d")
+fi
 
 export NEXT_TELEMETRY_DISABLED=1
 
@@ -85,12 +91,6 @@ fi
 export GOPATH="$HOME/go"
 if [[ -d "$GOPATH" ]]; then
     export PATH="$GOPATH/bin:$PATH"
-fi
-
-# ruby
-# ========================================
-if [[ -d "$HOME/.rbenv" ]]; then
-    eval "$(rbenv init - --no-rehash bash)"
 fi
 
 # docker

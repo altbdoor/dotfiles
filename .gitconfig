@@ -5,6 +5,8 @@
     defaultBranch = master
 [pull]
     rebase = true
+[push]
+    autoSetupRemote = true
 
 # https://blog.gitbutler.com/how-git-core-devs-configure-git/
 [branch]
@@ -21,4 +23,4 @@
 [rerere]
     enabled = false
 [merge]
-    conflictstyle = diff3 
+    conflictstyle = zdiff3

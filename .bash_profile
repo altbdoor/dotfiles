@@ -13,14 +13,14 @@ fi
 
 # os check
 # ========================================
-is_windows="OFF"
+IS_WINDOWS=0
 if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
-    is_windows="ON"
+    IS_WINDOWS=1
 fi
 
 # bells
 # ========================================
-if [[ "$is_windows" == "ON" && ! -f "$HOME/.inputrc" ]]; then
+if (( IS_WINDOWS )) && [[ ! -f "$HOME/.inputrc" ]]; then
     echo "set bell-style none" > "$HOME/.inputrc"
 fi
 
@@ -68,7 +68,7 @@ fi
 # mise en place
 # ========================================
 if command -v mise >/dev/null; then
-    if [[ "$is_windows" == "ON" ]]; then
+    if (( IS_WINDOWS )); then
         # https://github.com/jdx/mise/discussions/3961#discussioncomment-15286600
         activate_script="$(mise activate bash)"
         fixed_script=$(
@@ -81,7 +81,7 @@ fi
 
 # uv
 # ========================================
-if [[ "$is_windows" == "ON" && -f "$HOME/.local/bin/uv" ]]; then
+if (( IS_WINDOWS )) && [[ -f "$HOME/.local/bin/uv" ]]; then
     export PATH="$HOME/.local/bin:$PATH"
 fi
 
@@ -169,7 +169,7 @@ ICYAN="\[\033[0;96m\]"
 IWHITE="\[\033[0;97m\]"
 
 user_color="$IRED"
-if [[ "$is_windows" == "ON" ]]; then
+if (( IS_WINDOWS )); then
     user_color="$IBLUE"
 fi
 

@@ -4,6 +4,13 @@ if [[ "$OSTYPE" == "darwin"* && -f /opt/homebrew/bin/brew ]]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
+# interactive
+# ========================================
+IS_INTERACTIVE=0
+if [[ $- == *i* ]]; then
+    IS_INTERACTIVE=1
+fi
+
 # os check
 # ========================================
 is_windows="OFF"
@@ -36,7 +43,7 @@ shopt -s cmdhist
 shopt -s no_empty_cmd_completion
 shopt -s checkwinsize
 
-if [[ $- == *i* ]]; then
+if (( IS_INTERACTIVE )); then
     bind 'set completion-ignore-case on'
     bind "set menu-complete-display-prefix on"
     # bind "set show-all-if-ambiguous on"
@@ -58,6 +65,20 @@ fi
 #     export PATH="${PATH}:${i}"
 # done
 
+# mise en place
+# ========================================
+if command -v mise >/dev/null; then
+    if [[ "$is_windows" == "ON" ]]; then
+        # https://github.com/jdx/mise/discussions/3961#discussioncomment-15286600
+        activate_script="$(mise activate bash)"
+        fixed_script=$(
+            printf '%s\n' "$activate_script" |
+            sed 's|eval "\$(mise hook-env .*)"|&; export PATH="$(/usr/bin/cygpath -u -p \"$PATH\")";|'
+        )
+        eval "$fixed_script"
+    fi
+fi
+
 # uv
 # ========================================
 if [[ "$is_windows" == "ON" && -f "$HOME/.local/bin/uv" ]]; then
@@ -72,7 +93,7 @@ export NPM_CONFIG_AUDIT="false"
 export NPM_CONFIG_UPDATE_NOTIFIER="false"
 
 NPM_DAYS_AGO=14
-if [[ "$OSTYPE" == "darwin"* ]]; then 
+if [[ "$OSTYPE" == "darwin"* ]]; then
   export NPM_CONFIG_BEFORE=$(date -v-"$NPM_DAYS_AGO"d +"%Y-%m-%d")
 else
   export NPM_CONFIG_BEFORE=$(date -d "$NPM_DAYS_AGO days ago" +"%Y-%m-%d")

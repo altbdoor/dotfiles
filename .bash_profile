@@ -68,6 +68,7 @@ fi
 # mise en place
 # ========================================
 export MISE_NODE_VERIFY=false
+export MISE_IDIOMATIC_VERSION_FILE_ENABLE_TOOLS="ruby,node"
 
 if command -v mise >/dev/null; then
     if (( IS_WINDOWS )); then

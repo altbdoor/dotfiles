@@ -67,6 +67,8 @@ fi
 
 # mise en place
 # ========================================
+export MISE_NODE_VERIFY=false
+
 if command -v mise >/dev/null; then
     if (( IS_WINDOWS )); then
         # https://github.com/jdx/mise/discussions/3961#discussioncomment-15286600
@@ -76,6 +78,8 @@ if command -v mise >/dev/null; then
             sed 's|eval "\$(mise hook-env .*)"|&; export PATH="$(/usr/bin/cygpath -u -p \"$PATH\")";|'
         )
         eval "$fixed_script"
+    else
+        eval "$(mise activate bash)"
     fi
 fi
 
@@ -102,10 +106,10 @@ fi
 export NEXT_TELEMETRY_DISABLED=1
 
 # https://github.com/Schniz/fnm
-export FNM_DIR="$HOME/.fnm"
-if [[ -d "$FNM_DIR" ]]; then
-    eval "$(fnm env --use-on-cd)"
-fi
+# export FNM_DIR="$HOME/.fnm"
+# if [[ -d "$FNM_DIR" ]]; then
+#     eval "$(fnm env --use-on-cd)"
+# fi
 
 # golang
 # ========================================

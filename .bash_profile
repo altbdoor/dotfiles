@@ -79,10 +79,51 @@ if command -v mise >/dev/null; then
             sed 's|eval "\$(mise hook-env .*)"|&; export PATH="$(/usr/bin/cygpath -u -p \"$PATH\")";|'
         )
         eval "$fixed_script"
+
     else
         eval "$(mise activate bash)"
     fi
 fi
+
+mise_windows_path() {
+    local WINDOWS_PATH MISE_INSTALL_DIR
+    WINDOWS_PATH=$(powershell -NoProfile -Command '[Environment]::GetEnvironmentVariable("Path", "User")')
+    MISE_INSTALL_DIR=$(cygpath -w "$LOCALAPPDATA/mise/installs")
+
+    local NEW_PATH=""
+
+    IFS=';' read -ra WINDOWS_PATH_ARR <<< "$WINDOWS_PATH"
+    for win_path in "${WINDOWS_PATH_ARR[@]}"; do
+        if [[ -z "$win_path" ]]; then
+            continue
+        fi
+
+        if [[ "$win_path" == "$MISE_INSTALL_DIR"* ]]; then
+            continue
+        fi
+
+        NEW_PATH="${NEW_PATH:+$NEW_PATH;}${win_path}"
+    done
+
+    local -a global_exes=("deno" "go")
+    for exe_name in "${global_exes[@]}"; do
+        local exe_dir
+        exe_dir=$(mise which "$exe_name" 2>/dev/null)
+
+        if [[ -z "$exe_dir" ]]; then
+            continue
+        fi
+
+        exe_dir=$(dirname "$exe_dir")
+        exe_dir=$(cygpath -w "$exe_dir")
+        NEW_PATH="${NEW_PATH:+$NEW_PATH;}${exe_dir}"
+    done
+
+    printf "%s" "$NEW_PATH" | powershell -NoProfile -Command '
+        $inputText = [Console]::In.ReadToEnd().Trim()
+        [Environment]::SetEnvironmentVariable("Path", $inputText, "User")
+    '
+}
 
 # uv
 # ========================================
@@ -99,9 +140,9 @@ export NPM_CONFIG_UPDATE_NOTIFIER="false"
 
 NPM_DAYS_AGO=14
 if [[ "$OSTYPE" == "darwin"* ]]; then
-  export NPM_CONFIG_BEFORE=$(date -v-"$NPM_DAYS_AGO"d +"%Y-%m-%d")
+    export NPM_CONFIG_BEFORE=$(date -v-"$NPM_DAYS_AGO"d +"%Y-%m-%d")
 else
-  export NPM_CONFIG_BEFORE=$(date -d "$NPM_DAYS_AGO days ago" +"%Y-%m-%d")
+    export NPM_CONFIG_BEFORE=$(date -d "$NPM_DAYS_AGO days ago" +"%Y-%m-%d")
 fi
 
 export NEXT_TELEMETRY_DISABLED=1

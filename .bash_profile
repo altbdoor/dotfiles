@@ -86,38 +86,37 @@ if command -v mise >/dev/null; then
 fi
 
 mise_windows_path() {
-    local WINDOWS_PATH MISE_INSTALL_DIR
+    local WINDOWS_PATH SHIMS_OUTPUT
     WINDOWS_PATH=$(powershell -NoProfile -Command '[Environment]::GetEnvironmentVariable("Path", "User")')
-    MISE_INSTALL_DIR=$(cygpath -w "$LOCALAPPDATA/mise/installs")
+    SHIMS_OUTPUT=$(mise activate bash --shims)
+
+    local -a SHIM_DIRS=()
+
+    while IFS= read -r line; do
+        # clean path to windows
+        shim_dir="${line#export PATH=\"}"
+        shim_dir="${shim_dir%:\$PATH\"}"
+
+        if [[ -n "$shim_dir" ]]; then
+            SHIM_DIRS+=("$shim_dir")
+        fi
+    done <<< "$SHIMS_OUTPUT"
 
     local NEW_PATH=""
+    for shim_dir in "${SHIM_DIRS[@]}"; do
+        if [[ ";$NEW_PATH;" == *";$shim_dir;"* ]]; then
+            # already exist in new path
+            continue
 
-    IFS=';' read -ra WINDOWS_PATH_ARR <<< "$WINDOWS_PATH"
-    for win_path in "${WINDOWS_PATH_ARR[@]}"; do
-        if [[ -z "$win_path" ]]; then
+        elif [[ ";$WINDOWS_PATH;" == *";$shim_dir;"* ]]; then
+            # already exist in windows
             continue
         fi
 
-        if [[ "$win_path" == "$MISE_INSTALL_DIR"* ]]; then
-            continue
-        fi
-
-        NEW_PATH="${NEW_PATH:+$NEW_PATH;}${win_path}"
+        NEW_PATH="${NEW_PATH:+$NEW_PATH;}${shim_dir}"
     done
 
-    local -a global_exes=("deno" "go")
-    for exe_name in "${global_exes[@]}"; do
-        local exe_dir
-        exe_dir=$(mise which "$exe_name" 2>/dev/null)
-
-        if [[ -z "$exe_dir" ]]; then
-            continue
-        fi
-
-        exe_dir=$(dirname "$exe_dir")
-        exe_dir=$(cygpath -w "$exe_dir")
-        NEW_PATH="${NEW_PATH:+$NEW_PATH;}${exe_dir}"
-    done
+    NEW_PATH="${NEW_PATH:+$NEW_PATH;}${WINDOWS_PATH}"
 
     printf "%s" "$NEW_PATH" | powershell -NoProfile -Command '
         $inputText = [Console]::In.ReadToEnd().Trim()

@@ -126,6 +126,7 @@ mise_windows_path() {
 
 # uv
 # ========================================
+export UV_EXCLUDE_NEWER="14 days"
 if (( IS_WINDOWS )) && [[ -f "$HOME/.local/bin/uv" ]]; then
     export PATH="$HOME/.local/bin:$PATH"
 fi

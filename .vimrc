@@ -29,7 +29,7 @@ set noswapfile
 set ignorecase
 set smartcase
 
-autocmd FileType gitcommit call AutoInsertJiraToBody()
+autocmd FileType gitcommit call InsertJiraToBody()
 
 function! GetJira()
   let branch = system("git branch --show-current")->trim()
@@ -42,56 +42,29 @@ function! GetJira()
   return jira
 endfunction
 
-function! AutoInsertJiraToBody()
-  let jira = GetJira()
-  if jira ==# ''
-    return
-  endif
-
-  " empty title and body
-  if getline(1) ==# "" && getline(2) =~# '^#'
-    let jira_tag = "[J:" . jira . "]"
-    call append(1, ["", "- " . jira_tag])
-  endif
-endfunction
-
 function! InsertJiraToBody()
   let jira = GetJira()
   if jira ==# ''
     return
   endif
 
-  let jira_tag = "- [J:" . jira . "]"
-  let lnum = 1
-  let max = line('$')
-  let insert_at = -1
+  let first_line = getline(1)
+  let jira_tag = "[ML:" . jira . "]"
 
-  while lnum <= max
-    let line = getline(lnum)
+  " empty commit
+  if first_line ==# ''
+    call setline(1, jira_tag)
+    return
+  endif
 
-    " comment
-    if line =~# '^#'
-      let insert_at = lnum - 1
-      break
-    endif
+  " already has tag
+  if stridx(first_line, jira_tag) >= 0
+    return
+  endif
 
-    " exact jira already present
-    if line ==# jira_tag
-      echoerr "Jira tag already exists in commit body"
-      return
-    endif
-
-    " first bullet
-    if insert_at == -1 && line[0] ==# '-'
-      let insert_at = lnum - 1
-    endif
-
-    let lnum += 1
-  endwhile
-
-  if insert_at == -1
-    call append(max, ["", jira_tag])
-  else
-    call append(insert_at, jira_tag)
+  " contains colon
+  if first_line =~ ':'
+    let patchedline = substitute(first_line, ':\s*', ': ' . jira_tag . ' ', '')
+    call setline(1, patchedline)
   endif
 endfunction

@@ -160,6 +160,8 @@ if [[ -d "$GOPATH" ]]; then
     export PATH="$GOPATH/bin:$PATH"
 fi
 
+alias goupdate="go list -m -u -f '{{if and .Update (not .Indirect)}}{{.Path}}, {{.Version}}, {{.Update.Version}}{{end}}' all"
+
 # docker
 # ========================================
 export DOCKER_CLI_HINTS="false"

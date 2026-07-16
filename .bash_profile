@@ -189,6 +189,22 @@ fi
 
 export GIT_MERGE_AUTOEDIT=no
 
+# ffmpeg
+# ========================================
+optivid() {
+    local vidpath="$1"
+    outputpath="${vidpath%.*}"
+    outputpath="${outputpath//[^a-zA-Z0-9_]/_}"
+    outputpath="${outputpath}_opti.mp4"
+
+    if ! command -v ffmpeg >/dev/null 2>&1; then
+        echo "ffmpeg NOT found"
+        exit 1
+    fi
+
+    ffmpeg -y -i "$vidpath" -vf "setpts=0.5*PTS,fps=48" -an -c:v libx264 -crf 23 "$outputpath"
+}
+
 # playstation with rgb
 # ========================================
 # https://gist.github.com/vratiu/9780109

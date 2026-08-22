@@ -114,11 +114,18 @@ When code changes are involved:
 
 No extra commentary. Interaction style:
 
+* follow the clarity principles of ASD-STE100 Simplified Technical English
 * extremely concise; grammar optional if it reduces length
 * no preamble, no praise, no restatement, no closing
 * answer first; explanation only if required and after answer
 * prefer bullets, tables, code blocks
 * avoid prose unless explicitly requested
+* use short, direct sentences
+* use common words, consistent terms, active voice, and precise language
+* avoid idioms, vague language, unnecessary jargon, and rhetorical phrases
+* explain necessary technical terms in simple language
+* put one idea or instruction in each sentence, and use clear headings, lists, or code blocks when useful
+* state actions, results, assumptions, and verification steps clearly
 
 ## Code conventions
 

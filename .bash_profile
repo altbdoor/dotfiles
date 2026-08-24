@@ -193,16 +193,33 @@ export GIT_MERGE_AUTOEDIT=no
 # ========================================
 optivid() {
     local vidpath="$1"
-    outputpath="${vidpath%.*}"
-    outputpath="${outputpath//[^a-zA-Z0-9_]/_}"
-    outputpath="${outputpath}_opti.mp4"
+    local rename="$2"
+
+    if [[ "$vidpath" == *"_opti.mp4" ]]; then
+        echo "already optimized"
+        exit 1
+    fi
 
     if ! command -v ffmpeg >/dev/null 2>&1; then
         echo "ffmpeg NOT found"
         exit 1
     fi
 
+    local dir="$(dirname "$vidpath")"
+    local base
+    local outputpath
+
+    base="$(basename "$vidpath")"
+    base="${base%.*}"
+    base="${base//[^a-zA-Z0-9_]/_}"
+    outputpath="$dir/${base}_opti.mp4"
+
     ffmpeg -y -i "$vidpath" -vf "setpts=0.5*PTS,fps=48" -an -c:v libx264 -crf 23 "$outputpath"
+    rm "$vidpath"
+
+    if [[ -n "$rename" ]]; then
+        mv "$outputpath" "${dir}/${rename}_opti.mp4"
+    fi
 }
 
 # playstation with rgb

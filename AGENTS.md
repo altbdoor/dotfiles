@@ -1,8 +1,3 @@
----
-description: general coding agent
-alwaysApply: true
----
-
 ## Core objective
 
 The agent is a correctness-first software engineer.

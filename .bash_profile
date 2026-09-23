@@ -30,6 +30,11 @@ alias ls="ls -Ah --color=auto"
 alias ll="ls -l"
 alias loadprofile="source ~/.bash_profile"
 
+if (( IS_WINDOWS )); then
+    alias pbcopy='clip.exe'
+    alias pbpaste="powershell.exe -NoProfile -Command 'Get-Clipboard -Raw'"
+fi
+
 # bash
 # ========================================
 export CLICOLOR=1

@@ -20,8 +20,8 @@ fi
 
 # bells
 # ========================================
-if (( IS_WINDOWS )) && [[ ! -f "$HOME/.inputrc" ]]; then
-    echo "set bell-style none" > "$HOME/.inputrc"
+if ((IS_WINDOWS)) && [[ ! -f "$HOME/.inputrc" ]]; then
+    echo "set bell-style none" >"$HOME/.inputrc"
 fi
 
 # alias
@@ -48,7 +48,7 @@ shopt -s cmdhist
 shopt -s no_empty_cmd_completion
 shopt -s checkwinsize
 
-if (( IS_INTERACTIVE )); then
+if ((IS_INTERACTIVE)); then
     bind 'set completion-ignore-case on'
     bind "set menu-complete-display-prefix on"
     # bind "set show-all-if-ambiguous on"
@@ -76,12 +76,12 @@ export MISE_NODE_VERIFY=false
 export MISE_IDIOMATIC_VERSION_FILE_ENABLE_TOOLS="ruby,node"
 
 if command -v mise >/dev/null; then
-    if (( IS_WINDOWS )); then
+    if ((IS_WINDOWS)); then
         # https://github.com/jdx/mise/discussions/3961#discussioncomment-15286600
         activate_script="$(mise activate bash)"
         fixed_script=$(
             printf '%s\n' "$activate_script" |
-            sed 's|eval "\$(mise hook-env .*)"|&; export PATH="$(/usr/bin/cygpath -u -p \"$PATH\")";|'
+                sed 's|eval "\$(mise hook-env .*)"|&; export PATH="$(/usr/bin/cygpath -u -p \"$PATH\")";|'
         )
         eval "$fixed_script"
 
@@ -105,7 +105,7 @@ mise_windows_path() {
         if [[ -n "$shim_dir" ]]; then
             SHIM_DIRS+=("$shim_dir")
         fi
-    done <<< "$SHIMS_OUTPUT"
+    done <<<"$SHIMS_OUTPUT"
 
     local NEW_PATH=""
     for shim_dir in "${SHIM_DIRS[@]}"; do
@@ -132,7 +132,7 @@ mise_windows_path() {
 # uv
 # ========================================
 export UV_EXCLUDE_NEWER="14 days"
-if (( IS_WINDOWS )) && [[ -f "$HOME/.local/bin/uv" ]]; then
+if ((IS_WINDOWS)) && [[ -f "$HOME/.local/bin/uv" ]]; then
     export PATH="$HOME/.local/bin:$PATH"
 fi
 
@@ -227,6 +227,29 @@ optivid() {
     fi
 }
 
+# mobile work
+run_android() {
+    if adb devices | grep --quiet '^emulator-'; then
+        echo "emulator already running"
+        return 1
+    fi
+
+    first_avd=$(emulator -list-avds | head -1)
+    emulator -avd "$first_avd" >/dev/null 2>&1 &
+}
+
+run_ios() {
+    device="iPhone 17 Pro"
+
+    if xcrun simctl list devices booted | grep --quiet "$device"; then
+        echo "emulator already running"
+        return 1
+    fi
+
+    xcrun simctl boot "$device"
+    open -a Simulator
+}
+
 # playstation with rgb
 # ========================================
 # https://gist.github.com/vratiu/9780109
@@ -255,7 +278,7 @@ ICYAN="\[\033[0;96m\]"
 IWHITE="\[\033[0;97m\]"
 
 user_color="$IRED"
-if (( IS_WINDOWS )); then
+if ((IS_WINDOWS)); then
     user_color="$IBLUE"
 fi
 

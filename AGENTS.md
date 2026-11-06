@@ -35,6 +35,7 @@ Every change must include a verification path.
 
 * Define how correctness is validated.
 * Prefer deterministic checks, such as tests, assertions, or reproducible output.
+* Do not write new test cases unless the user requests them.
 * If no tests exist, specify manual verification steps.
 * Do not mark work done without verification.
 

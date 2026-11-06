@@ -30,7 +30,7 @@ alias ls="ls -Ah --color=auto"
 alias ll="ls -l"
 alias loadprofile="source ~/.bash_profile"
 
-if (( IS_WINDOWS )); then
+if ((IS_WINDOWS)); then
     alias pbcopy='clip.exe'
     alias pbpaste="powershell.exe -NoProfile -Command 'Get-Clipboard -Raw'"
 fi
@@ -151,12 +151,6 @@ else
 fi
 
 export NEXT_TELEMETRY_DISABLED=1
-
-# https://github.com/Schniz/fnm
-# export FNM_DIR="$HOME/.fnm"
-# if [[ -d "$FNM_DIR" ]]; then
-#     eval "$(fnm env --use-on-cd)"
-# fi
 
 # golang
 # ========================================
@@ -282,8 +276,8 @@ if ((IS_WINDOWS)); then
     user_color="$IBLUE"
 fi
 
-# appends and reload history across sessions
-hist_control="history -a; history -n; "
+# appends history
+hist_control="history -a; "
 
 # git ps1
 ansi_newline=$'\n'
